@@ -1,0 +1,30 @@
+name: remittance_app
+description: A new Flutter project.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  riverpod: ^2.5.0 # for state management
+  flutter_riverpod: ^2.4.10 # for UI binding
+  intl: ^0.19.0 # for date formatting
+  shared_preferences: ^2.2.3
+  flutter_svg: ^2.0.10+1 # for SVG icons and images
+  cached_network_image: ^3.3.1 # for caching network images and network resources used by the application
+  shimmer: ^3.0.0
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
