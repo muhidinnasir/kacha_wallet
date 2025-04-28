@@ -1,4 +1,4 @@
-name: remittance_app
+name: wanza_express
 description: A new Flutter project.
 publish_to: "none"
 version: 1.0.0+1
@@ -17,6 +17,11 @@ dependencies:
   cached_network_image: ^3.3.1 # for caching network images and network resources used by the application
   shimmer: ^3.0.0
   http: ^1.1.0
+  google_fonts: 6.1.0
+  flutter_appauth: ^8.0.3
+  flutter_secure_storage: ^9.2.4
+  flutter_dotenv: ^5.2.1
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +33,4 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - .env

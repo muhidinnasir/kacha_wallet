@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remittance_app/core/util/input_Validators.dart';
-import '../../../core/util/navigator_service.dart';
-import '../../../core/util/progress_dialog_utils.dart';
-import '../../../domain/wallet_provider.dart';
+import 'package:wanza_express/core/util/input_Validators.dart';
 import '../../widgets/custom_DropdownFormField.dart';
 import '../../widgets/custom_text_form_field.dart';
 
@@ -29,8 +26,6 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final walletNotifier = ref.read(walletProvider.notifier);
-    final isTransactionLoading = walletNotifier.isTransactionInProgress;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Send Money"),
@@ -108,51 +103,8 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: isTransactionLoading
-                      ? null
-                      : () async {
-                          final recipient = _recipientController.text;
-                          final email = _emailController.text;
-                          final accountNumber = _accountNumberController.text;
-                          final amount =
-                              double.tryParse(_amountController.text);
-
-                          if (recipient.isEmpty ||
-                              email.isEmpty ||
-                              accountNumber.isEmpty ||
-                              amount == null ||
-                              amount <= 0 ||
-                              _selectedBank == null ||
-                              _selectedCurrency == null) {
-                            ProgressDialogUtils.showSnackBar(
-                              message: "Invalid input!",
-                            );
-                            return;
-                          }
-                          ProgressDialogUtils.showProgressDialog(
-                            context: context,
-                            isCancellable: false,
-                          );
-                          await walletNotifier.sendMoney(
-                            recipient,
-                            amount,
-                            currency: _selectedCurrency!,
-                            bank: _selectedBank!,
-                            accountNumber: accountNumber,
-                          );
-                          if (mounted) {
-                            ProgressDialogUtils.showSnackBar(
-                              message: "Transaction Successful!",
-                            );
-                          }
-                          ProgressDialogUtils.hideProgressDialog();
-                          NavigatorService.goBack(); // Navigate back
-                        },
-                  child: isTransactionLoading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Text("Send Money"),
+                  onPressed: () async {},
+                  child: const Text("Send Money"),
                 ),
               ),
             ],

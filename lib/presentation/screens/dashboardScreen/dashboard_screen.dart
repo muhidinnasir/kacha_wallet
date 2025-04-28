@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remittance_app/core/util/date_time_extension.dart';
-import 'package:remittance_app/core/util/navigator_service.dart';
-import 'package:remittance_app/presentation/routes.dart';
-import 'package:remittance_app/presentation/widgets/theme_toggle_widget.dart';
-import '../../../data/repositories/mock_api_service.dart';
-import '../../../domain/wallet_provider.dart';
-import '../../widgets/custom_transaction_dialog.dart';
-import 'widgets/action_button_widget.dart';
-import 'widgets/dashboard_shimmer_loader_widget.dart';
+import 'package:wanza_express/presentation/routes.dart';
+import 'package:wanza_express/presentation/widgets/custom_image_view.dart';
+import '../../../core/image_constants.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -20,239 +14,164 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class DashboardScreenState extends ConsumerState<DashboardScreen> {
-  bool isWalletDataLoading = false;
-  String? fullName;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Automatically load wallet data and fetch user's full name
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await loadWalletData();
-      await loadUserFullName();
-    });
-  }
-
-  Future<void> loadWalletData() async {
-    setState(() {
-      isWalletDataLoading = true;
-    });
-    await ref.read(walletProvider.notifier).loadWalletData();
-    setState(() {
-      isWalletDataLoading = false;
-    });
-  }
-
-  Future<void> loadUserFullName() async {
-    final apiService = MockApiService();
-    fullName = await apiService.getFullName();
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    final walletState = ref.watch(walletProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryColor,
-      body: RefreshIndicator(
-        onRefresh: loadWalletData,
-        child: isWalletDataLoading
-            ? const DashboardShimmerLoader() // Show shimmer while loading
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  // Header section
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black,
-                              child: Icon(Icons.person, color: Colors.white),
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Welcome Back",
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                                Text(
-                                  fullName ?? "Loading...",
-                                  style: theme.textTheme.bodyLarge,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const ThemeToggleWidget(),
-                      ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 50),
+          // Wanza logo
+          CustomImageView(
+            imagePath: ImageConstant.wanzaLogo,
+            width: 104,
+            height: 26,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(height: 68),
+          Text(
+            "Welcome!",
+            style: theme.textTheme.titleLarge!.copyWith(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 38),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: theme.textTheme.bodyLarge!.copyWith(
+                  fontSize: 16,
+                  color: theme.textTheme.bodyLarge?.color,
+                ),
+                children: const [
+                  TextSpan(
+                    text:
+                        'To initiate a regular shipment with immediate payment, please select ',
+                  ),
+                  TextSpan(
+                    text: '“Create Shipment.”',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 40),
-                  // Available Balance Widget
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Available Balance",
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "\$${walletState?.balance.toStringAsFixed(2)}",
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  // Recent transactions List Widget
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: theme.canvasColor,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 15),
-                          Text(
-                            "Operations",
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ActionButton(
-                                onPressed: () => NavigatorService.pushNamed(
-                                    AppRoutes.transfer),
-                                icon: Icons.send,
-                                label: "Send Money",
-                              ),
-                              ActionButton(
-                                onPressed: () {},
-                                icon: Icons.account_balance_wallet_outlined,
-                                label: "Withdraw",
-                              ),
-                              ActionButton(
-                                onPressed: () {},
-                                icon: Icons.wallet_rounded,
-                                label: "Top Up",
-                              ),
-                              ActionButton(
-                                onPressed: () => NavigatorService.pushNamed(
-                                    AppRoutes.exchange),
-                                icon: Icons.currency_exchange_rounded,
-                                label: "Exchange Currency",
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 40),
-                          Row(
-                            children: [
-                              Text(
-                                "Recent Transactions",
-                                style: theme.textTheme.bodyMedium,
-                              ),
-                              const Spacer(),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('See All'),
-                              ),
-                            ],
-                          ),
-                          walletState == null ||
-                                  walletState.transactions.isEmpty
-                              ? const Center(
-                                  child: Text("No transactions yet."),
-                                )
-                              : Expanded(
-                                  child: ListView.separated(
-                                    itemCount: walletState.transactions.length,
-                                    separatorBuilder: (context, index) =>
-                                        Divider(color: theme.primaryColor),
-                                    itemBuilder: (context, index) {
-                                      // Sort the transactions by date in descending order
-                                      final sortedTransactions = walletState
-                                          .transactions
-                                        ..sort(
-                                            (a, b) => b.date.compareTo(a.date));
-
-                                      final transaction =
-                                          sortedTransactions[index];
-
-                                      return ListTile(
-                                        contentPadding: const EdgeInsets.all(2),
-                                        leading: const CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: Colors.black,
-                                          child: Icon(Icons.person,
-                                              color: Colors.white),
-                                        ),
-                                        title: Text(
-                                          "-\$${transaction.amount}",
-                                          style: theme.textTheme.bodyLarge,
-                                        ),
-                                        subtitle: Text(
-                                          "Recipient: ${transaction.recipient}\nDate: ${transaction.date.format()}",
-                                          style: theme.textTheme.bodySmall,
-                                        ),
-                                        trailing: Text(
-                                          transaction.id,
-                                          style: theme.textTheme.bodySmall,
-                                        ),
-                                        onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                CustomTransactionDialog(
-                                              title: "Transaction Details",
-                                              transactionDetails: {
-                                                "Transaction ID":
-                                                    transaction.id,
-                                                "Amount":
-                                                    "-\$${transaction.amount}",
-                                                "Recipient":
-                                                    transaction.recipient,
-                                                "Date":
-                                                    transaction.date.format(),
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                        ],
-                      ),
+                  TextSpan(text: ' For a credit shipment, kindly click on '),
+                  TextSpan(
+                    text: '“Create Credit Shipment.”',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 56),
+          // Create Shipment Button
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: SizedBox(
+              height: 64,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.shipmentDetailFormScreen,
+                    arguments: {
+                      'option': 'Create Shipment',
+                      'direction': 'Both', // Default direction
+                    },
+                  );
+                },
+                style: theme.elevatedButtonTheme.style!.copyWith(
+                  backgroundColor: MaterialStateProperty.all(
+                    theme.primaryColor,
+                  ),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.arrow_outward_rounded,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Create Shipment",
+                      style: theme.textTheme.titleMedium!.copyWith(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Create Credit Shipment Button
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: SizedBox(
+              height: 64,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.createshipmentScreen,
+                    arguments: {
+                      'option': 'Credit Shipment',
+                      'direction': 'Sender', // Default direction
+                    },
+                  );
+                },
+                style: theme.elevatedButtonTheme.style!.copyWith(
+                  backgroundColor: MaterialStateProperty.all(
+                    Colors.black,
+                  ),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.arrow_outward_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Create Credit Shipment",
+                      style: theme.textTheme.titleMedium!.copyWith(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

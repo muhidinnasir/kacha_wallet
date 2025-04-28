@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Primary Colors
-const Color primaryYellow = Color(0xFFf0a719);
+const Color primaryYellow = Colors.yellow;
 const Color primaryDark = Color(0xFFdf6a00);
 
 // Background Colors
@@ -15,3 +15,7 @@ const Color darkTextColor = Color(0xFFFFFFFF);
 // Card Colors
 const Color lightCardColor = Color(0xFFF5F5F5);
 const Color darkCardColor = Color(0xFF1E1E1E);
+
+const String baseURL = 'https://cms-gateway.dev.niyatconsultancy.com';
+
+const String getcurrentusercompany = 'api/Branches/current-user';

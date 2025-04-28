@@ -1,4 +1,4 @@
-package com.example.remittance_app
+package com.wanza.customer
 
 import io.flutter.embedding.android.FlutterActivity
 

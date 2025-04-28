@@ -1,4 +1,4 @@
-# remittance_app
+# wanza_logistics_app
 
 A Flutter-based remittance app designed to manage user transactions, view exchange rates, and send money securely. The app leverages mock APIs and local data storage for efficient data management.
 
@@ -11,11 +11,7 @@ Tools • Dart 3.1.0 • DevTools 2.25.0
 
 ## Features
 
-- Registration and Login: Secure registration and login using local data storage.
-- Dashboard: Displays user wallet balance and recent transactions.
-- Currency Conversion: Real-time conversion with custom formatting.
-- Transaction Details: Custom dialogs for detailed transaction views.
-- Theme Support: Light and dark theme toggle.
+- here the feature of the prject
 
 ## Application structure
 
@@ -45,8 +41,8 @@ root/
 Use the Feature-Driven Development (FDD) structure:
 
 - Core: Utilities like extensions (`DateTimeExtension`), constants, and shared helpers.
-- Data: Handles API calls (`MockApiService`) and defines data models.
-- Domain: Implements business logic and state management (`WalletNotifier`, `AuthNotifier`).
+- Data: Handles API calls (`ApiService`) and defines data models.
+- Domain: Implements business logic and state management.
 - Presentation: Contains UI widgets and screens.
 
 #### 2. Challenges Faced
@@ -68,13 +64,13 @@ Use the Feature-Driven Development (FDD) structure:
 #### 3. Solutions Implemented
 
 - Reusable Widgets:
-  - Components like `CustomTransactionDialog`, `ActionButton`, and `CustomDropdownFormField` simplify the UI.
+  - Components like  `ActionButton`, and `CustomDropdownFormField` simplify the UI.
 - Extensions:
   - `DateTimeExtension` ensures consistent formatting across the app.
 - State Management:
   - Used `Riverpod` for state management, providing a clean separation between UI and logic.
 - Mock APIs:
-  - Integrated a `MockApiService` for testing without a real backend.
+  - Integrated a `ApiService` for testing without a real backend.
 
 ---
 
@@ -82,7 +78,7 @@ Use the Feature-Driven Development (FDD) structure:
 
 To run the application, follow these steps:
 
-1. Clone the repository using `git clone https://github.com/muhidinnasir/kacha_wallet.git`.
-2. Navigate to the project directory using `cd kacha_wallet`.
+1. Clone the repository using `git clone 'ur github'`.
+2. Navigate to the project directory using `cd yourProjectFolder`.
 3. Install the required dependencies by running `flutter pub get`.
 4. Run the application using `flutter run`.

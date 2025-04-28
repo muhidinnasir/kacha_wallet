@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeNotifier extends StateNotifier<ThemeMode> {
   static const String _themeKey = "theme_mode";
 
-  ThemeNotifier() : super(ThemeMode.system) {
+  ThemeNotifier() : super(ThemeMode.light) {
     _loadTheme();
   }
 
@@ -33,7 +33,8 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else if (savedTheme == "dark") {
       state = ThemeMode.dark;
     } else {
-      state = ThemeMode.system;
+      // state = ThemeMode.system;
+      state = ThemeMode.light;
     }
   }
 }

@@ -13,65 +13,99 @@ class CustomDropdownFormField<T> extends StatelessWidget {
     this.borderRadius = 8.0,
     this.contentPadding,
     this.label,
+    this.isExpanded = false,
+    this.validator,
   }) : super(key: key);
 
-  /// List of items to display in the dropdown
   final List<DropdownMenuItem<T>> items;
-
-  /// Current selected value
+  final String? Function(T?)? validator;
   final T? value;
-
-  /// Callback for when the value changes
   final ValueChanged<T?> onChanged;
-
-  /// Hint widget to display when no value is selected
   final Widget? hint;
-
-  /// Decoration for the dropdown (InputDecoration)
   final InputDecoration? decoration;
-
-  /// Border radius for the dropdown field
   final double borderRadius;
-
-  /// Content padding for the dropdown
   final EdgeInsetsGeometry? contentPadding;
-
   final String? label;
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<T>(
-      value: value,
-      items: items,
-      onChanged: onChanged,
-      hint: hint,
-      decoration: decoration ??
-          InputDecoration(
-            labelText: label,
-            isDense: true,
-            contentPadding: contentPadding ?? const EdgeInsets.all(16),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1,
+    return SizedBox(
+      width: double.infinity,
+      height: 53,
+      child: DropdownButtonFormField<T>(
+        value: items.any((item) => item.value == value)
+            ? value
+            : null, // Ensure value exists in items
+        items: items,
+        onChanged: (value) {
+          onChanged(value); // Call the provided callback
+          Form.of(context).validate(); // Revalidate the form
+        },
+        isExpanded: isExpanded,
+        hint: hint,
+        icon: const Icon(
+          Icons.keyboard_arrow_down_outlined,
+          color: Colors.black,
+          size: 20,
+        ),
+        validator: validator,
+        decoration: decoration ??
+            InputDecoration(
+              filled: true,
+              fillColor: const Color(0xffE7E7E7),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 16,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.red,
+                  width: 1,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              errorStyle: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
               ),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 2,
-              ),
-            ),
-          ),
+      ),
     );
   }
 }

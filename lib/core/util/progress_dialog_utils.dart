@@ -42,17 +42,21 @@ class ProgressDialogUtils {
       SnackBar(
         content: Center(child: Text(message)),
         duration: const Duration(seconds: 4),
-        backgroundColor: Colors.orange,
+        backgroundColor:
+            Theme.of(NavigatorService.navigatorKey.currentState!.context)
+                .colorScheme
+                .primary,
         dismissDirection: DismissDirection.down,
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
-            bottom: MediaQuery.of(
-                        NavigatorService.navigatorKey.currentState!.context)
-                    .size
-                    .height -
-                150,
-            left: 10,
-            right: 10),
+          bottom:
+              MediaQuery.of(NavigatorService.navigatorKey.currentState!.context)
+                      .size
+                      .height -
+                  100,
+          left: 10,
+          right: 10,
+        ),
         // Adjust the duration as needed
       ),
     );
