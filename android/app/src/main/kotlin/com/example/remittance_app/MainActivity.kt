@@ -1,4 +1,4 @@
-package com.example.remittance_app
+package com.trucksload.driver
 
 import io.flutter.embedding.android.FlutterActivity
 

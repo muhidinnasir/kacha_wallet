@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'constants.dart';
 
 class AppThemes {
@@ -9,6 +10,7 @@ class AppThemes {
     scaffoldBackgroundColor: lightBackground,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        elevation: 0,
         backgroundColor: primaryYellow,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -34,10 +36,30 @@ class AppThemes {
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: primaryYellow,
     ),
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-          fontSize: 24, fontWeight: FontWeight.bold, color: lightTextColor),
-      bodyLarge: TextStyle(fontSize: 16, color: lightTextColor),
+    textTheme: TextTheme(
+      displayLarge: GoogleFonts.nunito(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: lightTextColor,
+      ),
+      bodyLarge: GoogleFonts.nunito(fontSize: 16, color: lightTextColor),
+      bodyMedium: GoogleFonts.nunito(fontSize: 14, color: lightTextColor),
+      bodySmall: GoogleFonts.nunito(fontSize: 12, color: lightTextColor),
+      titleLarge: GoogleFonts.nunito(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: lightTextColor,
+      ),
+      titleMedium: GoogleFonts.nunito(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: lightTextColor,
+      ),
+      titleSmall: GoogleFonts.nunito(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: lightTextColor,
+      ),
     ),
     cardTheme: CardTheme(
       color: lightCardColor,
@@ -78,13 +100,13 @@ class AppThemes {
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: primaryDark,
     ),
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
+    textTheme: TextTheme(
+      displayLarge: GoogleFonts.nunito(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: darkTextColor,
       ),
-      bodyLarge: TextStyle(fontSize: 16, color: darkTextColor),
+      bodyLarge: GoogleFonts.nunito(fontSize: 16, color: darkTextColor),
     ),
     cardTheme: const CardTheme(
       color: darkCardColor,

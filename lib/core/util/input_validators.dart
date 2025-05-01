@@ -21,4 +21,22 @@ class InputValidators {
     }
     return null;
   }
+
+  static String? validatePhoneNumber(String phoneNumber) {
+    final phoneRegex = RegExp(r"^\+?[0-9]{10,15}$");
+    if (!phoneRegex.hasMatch(phoneNumber)) {
+      return "Enter a valid phone number.";
+    }
+    return null;
+  }
+
+  static String? validateName(String name) {
+    if (name.isEmpty) {
+      return "Name cannot be empty.";
+    }
+    if (name.length < 2) {
+      return "Name must be at least 2 characters.";
+    }
+    return null;
+  }
 }
